@@ -1,0 +1,423 @@
+[tool.poetry]
+name = "fastapi-graphql"
+version = "0.1.0"
+description = "FastAPI GraphQL project"
+license = "MIT"
+authors = ["Juan Pablo Cadena Aguilar <jpcadena@espol.edu.ec>"]
+maintainers = ["Juan Pablo Cadena Aguilar <jpcadena@espol.edu.ec>"]
+readme = "README.md"
+homepage = "https://github.com/jpcadena/fastapi-graphql"
+repository = "https://github.com/jpcadena/fastapi-graphql"
+documentation = "https://github.com/jpcadena/fastapi-graphql"
+keywords = [
+    "python",
+    "backend",
+    "fastapi",
+    "graphene",
+    "graphql",
+    "poetry",
+    "pydantic",
+    "starlette",
+    "uvicorn",
+    "sqlalchemy",
+    "ruff",
+    "isort",
+    "black-formatter",
+    "mypy",
+    "postgresql",
+    "solid-principles",
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Web Environment",
+    "Framework :: FastAPI",
+    "Framework :: Pydantic",
+    "Framework :: Pydantic :: 2",
+    "Framework :: Pytest",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Natural Language :: Spanish",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Communications :: Email",
+    "Topic :: Communications :: File Sharing",
+    "Topic :: Communications :: Internet Phone",
+    "Topic :: Database",
+    "Topic :: Database :: Database Engines/Servers",
+    "Topic :: Documentation",
+    "Topic :: File Formats",
+    "Topic :: Internet",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Security",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Version Control",
+    "Topic :: Software Development :: Version Control :: CVS",
+    "Topic :: Software Development :: Version Control :: Git",
+    "Topic :: Text Processing",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Topic :: Text Processing :: Markup :: Markdown",
+    "Topic :: Text Processing :: Markup :: reStructuredText",
+    "Typing :: Typed",
+]
+packages = [{include = "fastapi_graphql"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = {extras = ["all"], version = "^0.111.0"}
+uvicorn = {extras = ["standard"], version = "^0.30.1"}
+starlette = "0.37.2"
+graphene = "^3.3"
+pydantic = "^2.7.4"
+pydantic-settings = "^2.3.4"
+pydantic-extra-types = "^2.8.2"
+pycountry = "^24.6.1"
+phonenumbers = "^8.13.39"
+email-validator = "^2.2.0"
+python-multipart = "^0.0.9"
+python-dotenv = "^1.0.1"
+aiofiles = "^24.1.0"
+types-aiofiles = "^24.1.0.20240626"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+types-python-jose = "^3.3.4.20240106"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+types-passlib = "^1.7.7.20240327"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.31"}
+asyncpg = "^0.29.0"
+ruff = "^0.4.10"
+isort = "^5.12.0"
+mypy = "^1.10.1"
+black = "^24.4.2"
+pre-commit = "^3.7.1"
+starlette-graphene3 = "^0.6.0"
+graphql-core = "^3.2.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.extras]
+pgsql = ["asyncpg"]
+databases = ["asyncpg"]
+
+[tool.poetry.urls]
+"FastAPI GraphQL" = "https://github.com/jpcadena/fastapi-graphql"
+
+[tool.isort]
+py_version = 311
+skip_glob = ["cache/*", "tests/*", ".ruff_cache/*", ".pytest_cache/*", ".mypy_cache/", "logs/*", ]
+#skip_gitignore = true
+line_length = 80
+multi_line_output = 3
+use_parentheses = true
+atomic = true
+include_trailing_comma = true
+force_grid_wrap = 0
+case_sensitive = true
+ensure_newline_before_comments = true
+profile = "black"
+remove_redundant_aliases = true
+color_output = true
+
+[tool.black]
+line-length = 80
+target-version = ["py311"]
+exclude = '''
+(
+    /(\.venv
+  | \.mypy_cache
+  | \.ruff_cache
+  | \.pytest_cache
+  | cache
+  | venv
+  | tests)/
+)
+'''
+skip-string-normalization = true
+
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".pytest_cache",
+    "cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+line-length = 80
+indent-width = 4
+target-version = "py311"
+fix = true
+output-format = "grouped"
+show-fixes = true
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes
+    "I", # isort
+    "C4", # flake8-comprehensions
+]
+ignore = [
+    "E501", # line too long, handled by black
+    "B008", # do not perform function calls in argument defaults
+]
+fixable = [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "I",
+    "N",
+    "Q",
+    "S",
+    "T",
+    "W",
+    "ANN",
+    "ARG",
+    "BLE",
+    "COM",
+    "DJ",
+    "DTZ",
+    "EM",
+    "ERA",
+    "EXE",
+    "FBT",
+    "ICN",
+    "INP",
+    "ISC",
+    "NPY",
+    "PD",
+    "PGH",
+    "PIE",
+    "PL",
+    "PT",
+    "PTH",
+    "PYI",
+    "RET",
+    "RSE",
+    "RUF",
+    "SIM",
+    "SLF",
+    "TCH",
+    "TID",
+    "TRY",
+    "UP",
+    "YTT",
+]
+unfixable = []
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+quote-style = "double"
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = 80
+
+[tool.ruff.lint.isort]
+known-third-party = ["fastapi", "pydantic", "starlette"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pep8-naming]
+# Allow Pydantic's `@validator` decorator to trigger class method treatment.
+classmethod-decorators = [
+    "pydantic.validator"
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"  # google, numpy
+ignore-decorators = ["typing.overload"]
+
+[tool.ruff.lint.pylint]
+allow-dunder-method-names = ["__tablename__", "__table_args__"]  # PLW3201
+
+[tool.ruff.lint.pyupgrade]
+# Preserve types, even if a file imports `from __future__ import annotations`.
+keep-runtime-typing = true
+
+
+[tool.mypy]
+exclude = '''
+(
+    /(\.venv
+  | \.mypy_cache
+  | \.ruff_cache
+  | \.pytest_cache
+  | cache
+  | venv
+  | tests)/
+)
+'''
+ignore_missing_imports = true
+follow_imports = "silent"
+python_version = "3.11"
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+strict_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+implicit_reexport = false
+strict_equality = true
+strict = true
+show_error_context = true
+show_error_codes = true
+pretty = true
+plugins = ["pydantic.mypy"]
+show_traceback = true
+raise_exceptions = true
+
+[tool.mypy-tests]
+ignore_errors = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true
+
+[tool.bandit]
+exclude_dirs = ["venv/*", ".mypy_cache/*", ".pytest_cache/*", ".ruff_cache/*", ".venv/*", "tests/*", ]
+tests = ["B301"]
+skips = ["B101", "B601", "B201", ]
+
+[tool.pytest.ini_options]
+addopts = [
+    "-rxXs", # Display extra info for test failures
+    "--strict-config", # Enforce strict pytest configuration
+    "--strict-markers", # Enforce strict markers
+    "--ignore=docs_src", # Ignore the 'docs_src' directory
+    "--cov=fastapi-graphql",
+    "--durations=10"
+]
+empty_parameter_set_mark = "xfail"
+faulthandler_timeout = 5
+filterwarnings = [
+    "error",
+    'ignore:The loop argument is deprecated since Python 3\.8, and scheduled for removal in Python 3\.10:DeprecationWarning:asyncio',
+    'ignore:starlette.middleware.wsgi is deprecated and will be removed in a future release\..*:DeprecationWarning:starlette',
+    "ignore:'cgi' is deprecated:DeprecationWarning",
+    "ignore:'crypt' is deprecated and slated for removal in Python 3.13:DeprecationWarning",
+    'ignore::pytest.PytestDeprecationWarning:pytest_cov',
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning",
+    "ignore:the imp module is deprecated in favour of importlib:DeprecationWarning",
+]
+junit_duration_report = "call"
+junit_logging = "system-out"
+junit_log_passing_tests = false
+log_auto_indent = true
+log_cli = true
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+log_cli_format = "%(asctime)s [%(level)s] %(message)s"
+log_cli_level = "INFO"
+log_date_format = "%Y-%m-%d %H:%M:%S"
+log_file = "logs/pytest-logs.txt"
+log_file_date_format = "%Y-%m-%d %H:%M:%S"
+log_file_format = "%(asctime)s [%(level)s] %(message)s"
+log_file_level = "INFO"
+log_format = "%(asctime)s [%(level)s] %(message)s"
+log_level = "INFO"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration (deselect with '-m \"not integration\"')",
+]
+minversion = "6.0"
+norecursedirs = [".svn", "_build", "tmp*", "node_modules", "venv", ".venv"]
+python_classes = "*TestSuite"
+python_files = ["test_*.py", "*_test.py"]
+python_functions = ["test_*", "*_test"]
+pythonpath = ["src", "tests"]
+required_plugins = ["pytest-cov", "pytest-asyncio"]
+testpaths = ["tests"]
+usefixtures = ["database_fixture"]
+verbosity_assertions = 2
+xfail_strict = true
+
+
+[tool.coverage.run]
+branch = true
+concurrency = ["thread", "multiprocessing"]
+context = "."
+data_file = ".coverage"
+disable_warnings = ["module-not-imported"]
+omit = [
+    "fastapi-graphql/tests/*",
+    "fastapi-graphql/migrations/*",
+    ".ruff_cache/*",
+    ".mypy_cache/*",
+    ".pytest_cache/*",
+    "cache/*",
+    ".venv/*",
+    "venv/*",
+]
+parallel = true
+source = ["fastapi-graphql", "."]
+relative_files = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self\\.debug",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if TYPE_CHECKING:",
+    "@typing.overload",
+    "if __name__ == .__main__.:"
+]
+fail_under = 90.0
+ignore_errors = true
+show_missing = true
+skip_covered = true
+skip_empty = true
+sort = "Cover"
+
+[tool.coverage.html]
+extra_css = "assets/css/coverage.css"
+title = "FastAPI Boilerplate for GraphQL"
+
+[tool.coverage.paths]
+source = [
+    "fastapi-graphql",
+    "."
+]

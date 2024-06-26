@@ -1,0 +1,3 @@
+"""
+Package app.api initialization.
+"""
