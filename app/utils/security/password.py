@@ -4,13 +4,14 @@ A module for password in the app.utils.security package.
 
 import logging
 from datetime import datetime, timedelta
-from typing import Any, Optional
+from typing import Annotated, Any, Optional
 
 from fastapi import Depends
 from pydantic import EmailStr
 
 from app.config.auth_settings import AuthSettings
-from app.config.config import get_auth_settings
+from app.config.config import get_auth_settings, get_init_settings
+from app.config.init_settings import InitSettings
 from app.utils.security.jwt import decode_jwt, encode_jwt
 
 logger: logging.Logger = logging.getLogger(__name__)
@@ -39,7 +40,9 @@ def generate_password_reset_payload(
 
 
 def generate_password_reset_token(
-    email: EmailStr, auth_settings: AuthSettings = Depends(get_auth_settings)
+    email: EmailStr,
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
+    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
 ) -> str:
     """
     Generate a password reset token for the given email address.
@@ -47,13 +50,16 @@ def generate_password_reset_token(
     :type email: EmailStr
     :param auth_settings: Dependency method for cached setting object
     :type auth_settings: AuthSettings
+    :param init_settings: Dependency method for cached setting object
+    :type init_settings: InitSettings
     :return: The password reset token
     :rtype: str
     """
+    header: dict[str, str] = {"alg": auth_settings.ALGORITHM}
     payload: dict[str, Any] = generate_password_reset_payload(
         email, auth_settings
     )
-    return encode_jwt(payload, auth_settings)
+    return encode_jwt(header, payload, auth_settings, init_settings.ENCODING)
 
 
 def verify_password_reset_token(

@@ -4,23 +4,25 @@ This module handles JSON Web Token (JWT) creation for authentication
 """
 
 import logging
-from datetime import datetime, timedelta
-from typing import Any, Optional
+from datetime import UTC, datetime, timedelta
+from typing import Annotated, Any
 
+from authlib.jose import JoseError
 from fastapi import Depends
 from fastapi.encoders import jsonable_encoder
-from jose import jwt
 
 from app.api.graphql.schemas.external.token import TokenPayload
 from app.api.graphql.schemas.infrastructure.scope import Scope
 from app.config.auth_settings import AuthSettings
-from app.config.config import get_auth_settings
+from app.config.config import get_auth_settings, get_init_settings
+from app.config.init_settings import InitSettings
+from app.utils.security.jwt import encode_jwt
 
 logger: logging.Logger = logging.getLogger(__name__)
 
 
 def _generate_expiration_time(
-    expires_delta: Optional[timedelta], minutes: Optional[float] = None
+    expires_delta: timedelta | None, minutes: float | None = None
 ) -> datetime:
     """
     Generate an expiration time for JWT
@@ -34,9 +36,9 @@ def _generate_expiration_time(
     :rtype: datetime
     """
     if expires_delta:
-        return datetime.utcnow() + expires_delta
+        return datetime.now(UTC) + expires_delta
     if minutes is not None:
-        return datetime.utcnow() + timedelta(minutes=minutes)
+        return datetime.now(UTC) + timedelta(minutes=minutes)
     value_error: ValueError = ValueError(
         "Either 'expires_delta' or 'minutes' must be provided."
     )
@@ -45,54 +47,63 @@ def _generate_expiration_time(
 
 
 def create_access_token(
-    payload: TokenPayload,
+    token_payload: TokenPayload,
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
+    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
     scope: Scope = Scope.ACCESS_TOKEN,
-    expires_delta: Optional[timedelta] = None,
-    auth_settings: AuthSettings = Depends(get_auth_settings),
+    expires_delta: timedelta | None = None,
 ) -> str:
     """
     Create a new JWT access token
-    :param scope: The token's scope.
-    :type scope: Scope
-    :param payload: The payload or claims for the token
-    :type payload: TokenPayload
-    :param expires_delta: The timedelta specifying when the token should expire
-    :type expires_delta: timedelta
+    :param token_payload: The payload or claims for the token
+    :type token_payload: TokenPayload
     :param auth_settings: Dependency method for cached setting object
     :type auth_settings: AuthSettings
+    :param init_settings: Dependency method for cached setting object
+    :type init_settings: InitSettings
+    :param scope: The token's scope.
+    :type scope: Scope
+    :param expires_delta: The timedelta specifying when the token should expire
+    :type expires_delta: timedelta
     :return: The encoded JWT
     :rtype: str
     """
-    claims: dict[str, Any]
+    payload: dict[str, Any]
     if expires_delta:
         expire_time: datetime = _generate_expiration_time(
             expires_delta, auth_settings.ACCESS_TOKEN_EXPIRE_MINUTES
         )
-        updated_payload: TokenPayload = payload.model_copy(
+        updated_payload: TokenPayload = token_payload.model_copy(
             update={"exp": int(expire_time.timestamp()), "scope": scope}
         )
-        claims = jsonable_encoder(updated_payload)
+        payload = jsonable_encoder(updated_payload)
     else:
-        claims = jsonable_encoder(payload)
-    encoded_jwt: str = jwt.encode(
-        claims=claims,
-        key=auth_settings.SECRET_KEY,
-        algorithm=auth_settings.ALGORITHM,
-    )
-    logger.info("JWT created with JTI: %s", payload.jti)
+        payload = jsonable_encoder(token_payload)
+    try:
+        header: dict[str, str] = {"alg": auth_settings.ALGORITHM}
+        encoded_jwt: str = encode_jwt(
+            header, payload, auth_settings, init_settings.ENCODING
+        )
+    except JoseError as exc:
+        logger.error(f"JWT encoding error: {exc}")
+        raise
+    logger.info("JWT created with JTI: %s", token_payload.jti)
     return encoded_jwt
 
 
 def create_refresh_token(
-    payload: TokenPayload,
-    auth_settings: AuthSettings = Depends(get_auth_settings),
+    token_payload: TokenPayload,
+    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
+    init_settings: Annotated[InitSettings, Depends(get_init_settings)],
 ) -> str:
     """
     Create a refresh token for authentication
-    :param payload: The data to be used as payload in the token
-    :type payload: TokenPayload
+    :param token_payload: The data to be used as payload in the token
+    :type token_payload: TokenPayload
     :param auth_settings: Dependency method for cached setting object
     :type auth_settings: AuthSettings
+    :param init_settings: Dependency method for cached setting object
+    :type init_settings: InitSettings
     :return: The access token with refresh expiration time
     :rtype: str
     """
@@ -100,9 +111,10 @@ def create_refresh_token(
         minutes=auth_settings.REFRESH_TOKEN_EXPIRE_MINUTES
     )
     token: str = create_access_token(
-        payload=payload,
+        token_payload=token_payload,
+        auth_settings=auth_settings,
+        init_settings=init_settings,
         scope=Scope.REFRESH_TOKEN,
         expires_delta=expires,
-        auth_settings=auth_settings,
     )
     return token
