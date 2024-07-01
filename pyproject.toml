@@ -94,7 +94,7 @@ passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 types-passlib = "^1.7.7.20240327"
 sqlalchemy = {extras = ["asyncio"], version = "^2.0.31"}
 asyncpg = "^0.29.0"
-ruff = "^0.4.10"
+ruff = "^0.5.0"
 isort = "^5.12.0"
 mypy = "^1.10.1"
 black = "^24.4.2"
