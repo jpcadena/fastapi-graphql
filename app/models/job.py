@@ -4,7 +4,7 @@ A module for job in the app-models package.
 
 from typing import TYPE_CHECKING
 
-from pydantic import EmailStr, PositiveInt
+from pydantic import PositiveInt
 from sqlalchemy import CheckConstraint, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -23,9 +23,10 @@ class Job(Base):  # type: ignore
 
     id: Mapped[PositiveInt] = mapped_column(
         Integer,
-        index=True,
         nullable=False,
         primary_key=True,
+        autoincrement="auto",
+        index=True,
         unique=True,
         comment="ID of the Job",
     )
@@ -34,23 +35,24 @@ class Job(Base):  # type: ignore
         nullable=False,
         comment="Title to identify the job",
     )
-    description: Mapped[EmailStr] = mapped_column(
+    description: Mapped[str] = mapped_column(
         String(320),
-        unique=True,
         nullable=False,
         comment="Description to identify the job",
     )
     employer_id: Mapped[PositiveInt] = mapped_column(
         Integer,
         ForeignKey(
-            "job_employer.id",
+            "employer.id",
             name="job_employer_id_fkey",
         ),
         nullable=False,
         comment="ID of the Employer related with the job",
     )
     employer: Mapped["Employer"] = relationship(
-        "Employer", back_populates="job", lazy="joined"
+        "Employer",
+        back_populates="jobs",
+        lazy="joined",
     )
 
     __table_args__ = (

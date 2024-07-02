@@ -24,9 +24,10 @@ class Employer(Base):  # type: ignore
 
     id: Mapped[PositiveInt] = mapped_column(
         Integer,
-        index=True,
         nullable=False,
         primary_key=True,
+        autoincrement="auto",
+        index=True,
         unique=True,
         comment="ID of the employer",
     )
@@ -37,9 +38,9 @@ class Employer(Base):  # type: ignore
     )
     contact_email: Mapped[EmailStr] = mapped_column(
         String(320),
+        nullable=False,
         index=True,
         unique=True,
-        nullable=False,
         comment="Preferred e-mail address of the employer",
     )
     industry: Mapped[str] = mapped_column(
@@ -47,8 +48,10 @@ class Employer(Base):  # type: ignore
         nullable=False,
         comment="Industry from the employer works",
     )
-    jobs: Mapped["Job"] = relationship(
-        "Job", back_populates="employer", lazy="joined"
+    jobs: Mapped[list["Job"]] = relationship(
+        "Job",
+        back_populates="employer",
+        lazy="joined",
     )
 
     __table_args__ = (

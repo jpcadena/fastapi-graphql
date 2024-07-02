@@ -2,11 +2,13 @@
 A module for employer in the app.api.graphql.schemas.external package.
 """
 
-from typing import Any, Optional
+from typing import Optional
 
 from graphene import Int, List, ObjectType, String
+from graphql.type.definition import GraphQLResolveInfo
 
 from app.api.graphql.resolvers.resolvers import resolver_jobs
+from app.models.employer import Employer as EmployerModel
 
 
 class Employer(ObjectType):  # type: ignore
@@ -18,7 +20,9 @@ class Employer(ObjectType):  # type: ignore
 
     @staticmethod
     def resolve_jobs(
-        root: Optional[dict[str, Any]], info: Optional[Any]
+        root: Optional[EmployerModel], info: Optional[GraphQLResolveInfo]
     ) -> list[dict[str, int | str]]:
+        if root is None:
+            return []
         jobs: list[dict[str, int | str]] = resolver_jobs()
-        return [job for job in jobs if job["employer_id"] == root["id"]]
+        return [job for job in jobs if job["employer_id"] == root.id]

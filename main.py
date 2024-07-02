@@ -18,6 +18,7 @@ from starlette_graphene3 import GraphQLApp, make_graphiql_handler
 from app.api.graphql.schema import schema
 from app.config.config import auth_setting, init_setting, setting
 from app.core import logging_config
+from app.core.lifecycle import lifespan
 from app.middlewares.security_headers import SecurityHeadersMiddleware
 from app.utils.file_utils.openapi_utils import (
     custom_generate_unique_id,
@@ -27,11 +28,11 @@ from app.utils.file_utils.openapi_utils import (
 logging_config.setup_logging(init_settings=init_setting, settings=setting)
 logger: logging.Logger = logging.getLogger(__name__)
 
-
 app: FastAPI = FastAPI(
     debug=True,
     openapi_url=f"{auth_setting.API_V1_STR}{init_setting.OPENAPI_FILE_PATH}",
     openapi_tags=init_setting.TAGS_METADATA,
+    lifespan=lifespan,
     generate_unique_id_function=custom_generate_unique_id,
 )
 app.openapi = partial(custom_openapi, app)  # type: ignore
@@ -53,6 +54,8 @@ app.mount(
 app.mount(
     "/graphql", GraphQLApp(schema, on_get=make_graphiql_handler()), "graphql"
 )
+
+
 # make_playground_handler()
 
 
@@ -68,7 +71,7 @@ async def redirect_to_docs() -> RedirectResponse:
     - `return:` **The redirected response**
     - `rtype:` **RedirectResponse**
     """
-    return RedirectResponse(url="/docs")
+    return RedirectResponse(url="/graphql/")
 
 
 if __name__ == "__main__":

@@ -4,17 +4,17 @@ A module for lifecycle in the app-core package.
 
 import logging
 from contextlib import asynccontextmanager
+from typing import Any, AsyncGenerator
 
 from fastapi import FastAPI
 
-from app.config.config import init_setting, setting
 from app.db.init_db import init_db
 
 logger: logging.Logger = logging.getLogger(__name__)
 
 
-@asynccontextmanager  # type: ignore
-async def lifespan(application: FastAPI) -> None:
+@asynccontextmanager
+async def lifespan(application: FastAPI) -> AsyncGenerator[Any, None]:
     """
     The lifespan of the application
     :param application: The FastAPI application
@@ -23,4 +23,11 @@ async def lifespan(application: FastAPI) -> None:
     :rtype: AsyncGenerator[Any, None]
     """
     logger.info("Starting API...")
-    await init_db(setting, init_setting)
+    try:
+        await init_db()
+        yield
+    except Exception as exc:
+        logger.error(f"Error during application startup: {exc}")
+        raise
+    finally:
+        logger.info("Application shutdown completed.")

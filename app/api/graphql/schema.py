@@ -4,17 +4,19 @@ A module for schema in the app.api.graphql package.
 
 from typing import Any, Optional
 
-import graphene
+from graphene import List, ObjectType, Schema
 
+from .mutations.mutation import Mutation
 from .resolvers.resolvers import resolver_employers, resolver_jobs
 from .schemas.external.employer import Employer
 from .schemas.external.job import Job
 
 
-class Query(graphene.ObjectType):  # type: ignore
-    jobs = graphene.List(Job)
-    employers = graphene.List(Employer)
-    # employer = graphene.Field(Employer, id=graphene.Int(required=True))
+class Query(ObjectType):  # type: ignore
+    jobs = List(Job)
+    employers = List(Employer)
+
+    # employer = Field(Employer, id=Int(required=True))
 
     @staticmethod
     def resolve_jobs(
@@ -29,4 +31,4 @@ class Query(graphene.ObjectType):  # type: ignore
         return resolver_employers()
 
 
-schema: graphene.Schema = graphene.Schema(query=Query, types=[Employer, Job])
+schema: Schema = Schema(query=Query, mutation=Mutation, types=[Employer, Job])

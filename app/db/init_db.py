@@ -5,7 +5,6 @@ Initialization of the database (PostgreSQL) script
 import logging
 from typing import Union
 
-from fastapi import Depends
 from sqlalchemy.exc import (
     CompileError,
     DataError,
@@ -19,9 +18,6 @@ from sqlalchemy.exc import (
 from sqlalchemy.exc import TimeoutError as SATimeoutError
 from sqlalchemy.ext.asyncio import AsyncTransaction
 
-from app.config.config import get_init_settings, get_settings
-from app.config.init_settings import InitSettings
-from app.config.settings import Settings
 from app.core.decorators import benchmark, with_logging
 from app.db.base_class import Base
 from app.db.session import async_engine
@@ -65,16 +61,9 @@ async def create_db_and_tables() -> None:
 
 @with_logging
 @benchmark
-async def init_db(
-    settings: Settings = Depends(get_settings),
-    init_settings: InitSettings = get_init_settings(),
-) -> None:
+async def init_db() -> None:
     """
     Initialize the database connection and create the necessary tables.
-    :param settings: Dependency method for cached setting object
-    :type settings: Settings
-    :param init_settings: Dependency method for cached init setting object
-    :type init_settings: InitSettings
     :return: None
     :rtype: NoneType
     """

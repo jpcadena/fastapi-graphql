@@ -23,14 +23,10 @@ class SQLDatabaseSettings(BaseSettings):
     )
     TIMESTAMP_PRECISION: PositiveInt = 2
     DB_EMAIL_CONSTRAINT: str = (
-        "email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\" ".[A-Z|a-z]{2,}$'"
+        "contact_email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\"
+        ".[A-Z|a-z]{2,"
+        "}$'"
     )
-    DB_PHONE_NUMBER_CONSTRAINT: str = (
-        "phone_number ~ '^tel:\\+\\d{3}-\\d{2}-\\d{3}-\\d{4}$'"
-    )
-    DB_USER_PASSWORD_CONSTRAINT: str = "[#?!@$%^&*-]"
-    DB_REGION_CODE_CONSTRAINT: str = "code ~ '^[0-9]{2}$'"
-    DB_POSTAL_CODE_CONSTRAINT: str = "^(0[1-9]|1[0-9]|2[0-4])[0-9]{4}$"
     POSTGRES_SCHEME: str
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
