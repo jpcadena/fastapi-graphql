@@ -5,6 +5,7 @@ A module for schema in the app.api.graphql package.
 from typing import Any, Optional
 
 from graphene import List, ObjectType, Schema
+from graphql.type.definition import GraphQLResolveInfo
 
 from .mutations.mutation import Mutation
 from .resolvers.resolvers import resolver_employers, resolver_jobs
@@ -20,13 +21,13 @@ class Query(ObjectType):  # type: ignore
 
     @staticmethod
     def resolve_jobs(
-        root: Optional[Any], info: Optional[Any]
+        root: Optional[Any], info: Optional[GraphQLResolveInfo]
     ) -> list[dict[str, int | str]]:
         return resolver_jobs()
 
     @staticmethod
     def resolve_employers(
-        root: Optional[Any], info: Optional[Any]
+        root: Optional[Any], info: Optional[GraphQLResolveInfo]
     ) -> list[dict[str, int | str]]:
         return resolver_employers()
 

@@ -2,9 +2,10 @@
 A module for employer in the app.api.graphql.mutations package.
 """
 
-from typing import Any, Optional
+from typing import Optional
 
 from graphene import Field, Int, Mutation, String
+from graphql.type.definition import GraphQLResolveInfo
 from pydantic import EmailStr, PositiveInt
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -23,8 +24,8 @@ class AddEmployer(Mutation):  # type: ignore
 
     @staticmethod
     async def mutate(
-        root: Optional[Any],
-        info: Optional[Any],
+        root: Optional[Employer],
+        info: Optional[GraphQLResolveInfo],
         name: str,
         contact_email: EmailStr,
         industry: str,
@@ -49,8 +50,8 @@ class UpdateEmployer(Mutation):  # type: ignore
 
     @staticmethod
     async def mutate(
-        root: Optional[Any],
-        info: Optional[Any],
+        root: Optional[Employer],
+        info: Optional[GraphQLResolveInfo],
         _id: PositiveInt,
         name: Optional[str] = None,
         contact_email: Optional[EmailStr] = None,
