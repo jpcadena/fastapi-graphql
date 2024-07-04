@@ -4,12 +4,12 @@ A module for job in the app.api.graphql.mutations package.
 
 from typing import Optional
 
-from graphene import Field, Int, Mutation, String
+from graphene import Boolean, Field, Int, Mutation, String
 from graphql.type.definition import GraphQLResolveInfo
 from pydantic import PositiveInt
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.graphql.schemas.external.job import Job as JobObject
+from app.api.graphql.types.job import Job as JobObject
 from app.db.session import get_session
 from app.exceptions.exceptions import DatabaseException
 from app.models.job import Job
@@ -58,17 +58,35 @@ class UpdateJob(Mutation):  # type: ignore
     ) -> "UpdateJob":
         async_session: AsyncSession = await get_session()
         job = await async_session.get(Job, _id)
-        print(type(job))
         if not job:
             raise DatabaseException("Job not found")
         if title is not None:
             job.title = title
-            print(type(job.title))
         if description is not None:
             job.description = description
-            print(type(job.description))
         if employer_id is not None:
             job.employer_id = employer_id
-            print(type(job.employer_id))
         await async_session.commit()
         return UpdateJob(job=job)
+
+
+class DeleteJob(Mutation):  # type: ignore
+    class Arguments:
+        id = Int(required=True)
+
+    success = Boolean()
+    job = Field(lambda: JobObject)
+
+    @staticmethod
+    async def mutate(
+        root: Optional[Job],
+        info: Optional[GraphQLResolveInfo],
+        _id: PositiveInt,
+    ) -> "DeleteJob":
+        async_session: AsyncSession = await get_session()
+        job = await async_session.get(Job, _id)
+        if not job:
+            raise DatabaseException("Job not found")
+        await async_session.delete(job)
+        await async_session.commit()
+        return DeleteJob(success=True)

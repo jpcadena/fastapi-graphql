@@ -3,7 +3,6 @@ Initialization of the database (PostgreSQL) script
 """
 
 import logging
-from typing import Union
 
 from sqlalchemy.exc import (
     CompileError,
@@ -68,41 +67,3 @@ async def init_db() -> None:
     :rtype: NoneType
     """
     await create_db_and_tables()
-    # TODO: Create super user using Mutation (GraphQL)
-
-
-# Fictional data from dummy database on disk
-employers: list[dict[str, Union[int, str]]] = [
-    {
-        "id": 1,
-        "name": "MetaTechA",
-        "contact_email": "contact@company-a.com",
-        "industry": "Tech",
-    },
-    {
-        "id": 2,
-        "name": "MoneySoftB",
-        "contact_email": "contact@company-b.com",
-        "industry": "Finance",
-    },
-]
-jobs: list[dict[str, Union[int, str]]] = [
-    {
-        "id": 1,
-        "title": "Software Engineer",
-        "description": "Develop web applications",
-        "employer_id": 1,
-    },
-    {
-        "id": 2,
-        "title": "Data Analyst",
-        "description": "Analyze data and create reports",
-        "employer_id": 1,
-    },
-    {
-        "id": 3,
-        "title": "Accountant",
-        "description": "Manage financial records",
-        "employer_id": 2,
-    },
-]

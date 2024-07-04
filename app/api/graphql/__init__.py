@@ -1,3 +1,3 @@
 """
-Package app.graphql initialization.
+Package app.api.graphql initialization.
 """
