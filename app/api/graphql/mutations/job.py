@@ -9,7 +9,7 @@ from graphql.type.definition import GraphQLResolveInfo
 from pydantic import PositiveInt
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.graphql.types.job import Job as JobObject
+from app.api.graphql.types.job import JobType
 from app.db.session import get_session
 from app.exceptions.exceptions import DatabaseException
 from app.models.job import Job
@@ -21,7 +21,7 @@ class AddJob(Mutation):  # type: ignore
         description = String(required=True)
         employer_id = Int(required=True)
 
-    job = Field(lambda: JobObject)
+    job = Field(lambda: JobType)
 
     @staticmethod
     async def mutate(
@@ -45,7 +45,7 @@ class UpdateJob(Mutation):  # type: ignore
         description = String()
         employer_id = Int()
 
-    job = Field(lambda: JobObject)
+    job = Field(lambda: JobType)
 
     @staticmethod
     async def mutate(
@@ -75,7 +75,7 @@ class DeleteJob(Mutation):  # type: ignore
         id = Int(required=True)
 
     success = Boolean()
-    job = Field(lambda: JobObject)
+    job = Field(lambda: JobType)
 
     @staticmethod
     async def mutate(

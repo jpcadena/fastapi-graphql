@@ -68,7 +68,7 @@ def custom_generate_unique_id(route: APIRoute) -> str:
     :return: new ID based on tag and route name
     :rtype: str
     """
-    if route.name in ("redirect_to_docs",):
+    if route.name in ("redirect_to_playground",):
         return ""
     return f"{route.tags[0]}-{route.name}"
 

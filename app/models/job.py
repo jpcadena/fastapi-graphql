@@ -5,12 +5,14 @@ A module for job in the app-models package.
 from typing import TYPE_CHECKING
 
 from pydantic import PositiveInt
-from sqlalchemy import CheckConstraint, ForeignKey, Integer, String
+from sqlalchemy import CheckConstraint, ForeignKey, Integer
+from sqlalchemy.dialects.postgresql import VARCHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base_class import Base
 
 if TYPE_CHECKING:
+    from app.models.application import Application
     from app.models.employer import Employer
 
 
@@ -25,18 +27,17 @@ class Job(Base):  # type: ignore
         Integer,
         nullable=False,
         primary_key=True,
-        autoincrement="auto",
         index=True,
         unique=True,
         comment="ID of the Job",
     )
     title: Mapped[str] = mapped_column(
-        String(100),
+        VARCHAR(100),
         nullable=False,
         comment="Title to identify the job",
     )
     description: Mapped[str] = mapped_column(
-        String(320),
+        VARCHAR(320),
         nullable=False,
         comment="Description to identify the job",
     )
@@ -53,6 +54,9 @@ class Job(Base):  # type: ignore
         "Employer",
         back_populates="jobs",
         lazy="joined",
+    )
+    applications: Mapped[list["Application"]] = relationship(
+        "Application", back_populates="job", lazy="joined"
     )
 
     __table_args__ = (

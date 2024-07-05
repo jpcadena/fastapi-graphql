@@ -9,7 +9,7 @@ from graphql.type.definition import GraphQLResolveInfo
 from pydantic import PositiveInt
 
 from app.api.graphql.resolvers.job import resolver_job, resolver_jobs
-from app.api.graphql.types.job import Job as JobType
+from app.api.graphql.types.job import JobType
 from app.models.job import Job
 
 

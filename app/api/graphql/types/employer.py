@@ -12,12 +12,12 @@ from app.models.employer import Employer
 from app.models.job import Job
 
 
-class Employer(ObjectType):  # type: ignore
+class EmployerType(ObjectType):  # type: ignore
     id = Int()
     name = String()
     contact_email = String()
     industry = String()
-    jobs = List("app.api.graphql.types.job.Job")
+    jobs = List("app.api.graphql.types.job.JobType")
 
     @staticmethod
     def resolve_jobs(
@@ -30,4 +30,4 @@ class Employer(ObjectType):  # type: ignore
         return root.jobs
 
 
-__all__ = ["Employer"]
+__all__ = ["EmployerType"]

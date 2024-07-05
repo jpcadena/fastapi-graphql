@@ -9,7 +9,7 @@ from graphql.type.definition import GraphQLResolveInfo
 from pydantic import EmailStr, PositiveInt
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.graphql.types.employer import Employer as EmployerObject
+from app.api.graphql.types.employer import EmployerType
 from app.db.session import get_session
 from app.exceptions.exceptions import DatabaseException
 from app.models.employer import Employer
@@ -21,7 +21,7 @@ class AddEmployer(Mutation):  # type: ignore
         contact_email = String(required=True)
         industry = String(required=True)
 
-    employer = Field(lambda: EmployerObject)
+    employer = Field(lambda: EmployerType)
 
     @staticmethod
     async def mutate(
@@ -47,7 +47,7 @@ class UpdateEmployer(Mutation):  # type: ignore
         contact_email = String()
         industry = String()
 
-    employer = Field(lambda: EmployerObject)
+    employer = Field(lambda: EmployerType)
 
     @staticmethod
     async def mutate(

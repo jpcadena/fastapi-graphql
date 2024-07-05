@@ -8,7 +8,7 @@ from graphene import List, ObjectType
 from graphql.type.definition import GraphQLResolveInfo
 
 from app.api.graphql.resolvers.user import resolver_users
-from app.api.graphql.types.user import User as UserType
+from app.api.graphql.types.user import UserType
 from app.models.user import User
 
 

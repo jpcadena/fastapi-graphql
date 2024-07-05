@@ -12,7 +12,7 @@ from app.api.graphql.resolvers.employer import (
     resolver_employer,
     resolver_employers,
 )
-from app.api.graphql.types.employer import Employer as EmployerType
+from app.api.graphql.types.employer import EmployerType
 from app.models.employer import Employer
 
 

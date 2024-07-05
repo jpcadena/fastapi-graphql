@@ -64,9 +64,9 @@ app.mount(
     status_code=status.HTTP_307_TEMPORARY_REDIRECT,
     response_class=RedirectResponse,
 )
-async def redirect_to_docs() -> RedirectResponse:
+async def redirect_to_playground() -> RedirectResponse:
     """
-    Redirects the user to the /docs endpoint for API documentation.
+    Redirects the user to the /playground endpoint for GraphQL interaction.
     ## Response:
     - `return:` **The redirected response**
     - `rtype:` **RedirectResponse**

@@ -6,9 +6,10 @@ from graphene import Schema
 
 from app.api.graphql.mutations.mutation import Mutation
 from app.api.graphql.queries.query import Query
-from app.api.graphql.types.employer import Employer as EmployerType
-from app.api.graphql.types.job import Job as JobType
+from app.api.graphql.types import __all__ as types
 
 schema: Schema = Schema(
-    query=Query, mutation=Mutation, types=[EmployerType, JobType]
+    query=Query,
+    mutation=Mutation,
+    types=types,
 )

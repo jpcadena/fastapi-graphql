@@ -3,14 +3,18 @@ A module for user in the app models package.
 """
 
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from pydantic import EmailStr, PositiveInt
-from sqlalchemy import CheckConstraint, text
-from sqlalchemy.dialects.postgresql import INTEGER, TIMESTAMP, VARCHAR
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import CheckConstraint, Integer, text
+from sqlalchemy.dialects.postgresql import TIMESTAMP, VARCHAR
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.config.config import sql_database_setting
 from app.db.base_class import Base
+
+if TYPE_CHECKING:
+    from app.models.application import Application
 
 
 class User(Base):  # type: ignore
@@ -21,10 +25,9 @@ class User(Base):  # type: ignore
     __tablename__ = "users"
 
     id: Mapped[PositiveInt] = mapped_column(
-        INTEGER,
+        Integer,
         nullable=False,
         primary_key=True,
-        auto_increment=True,
         index=True,
         unique=True,
         comment="ID of the User",
@@ -66,6 +69,9 @@ class User(Base):  # type: ignore
         onupdate=text("now()"),
         comment="Time the User was updated",
     )
+    applications: Mapped[list["Application"]] = relationship(
+        "Application", back_populates="user", lazy="joined"
+    )
 
     __table_args__ = (
         CheckConstraint(
@@ -77,11 +83,11 @@ class User(Base):  # type: ignore
             name="users_email_length",
         ),
         CheckConstraint(
-            sql_database_setting.DB_EMAIL_CONSTRAINT,
+            sql_database_setting.DB_EMAIL_CONSTRAINT[8:],
             name="users_email_format",
         ),
         CheckConstraint(
-            "LENGTH(password) = 60",
+            "LENGTH(password) >= 8",
             name="users_password_length",
         ),
         CheckConstraint(
