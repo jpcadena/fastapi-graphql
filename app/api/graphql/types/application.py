@@ -30,6 +30,3 @@ class ApplicationType(ObjectType):  # type: ignore
         root: Optional[Application], info: Optional[GraphQLResolveInfo]
     ) -> Job | None:
         return None if root is None else root.job
-
-
-__all__ = ["ApplicationType"]

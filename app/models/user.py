@@ -6,8 +6,8 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 
 from pydantic import EmailStr, PositiveInt
-from sqlalchemy import CheckConstraint, Integer, text
-from sqlalchemy.dialects.postgresql import TIMESTAMP, VARCHAR
+from sqlalchemy import CheckConstraint, text
+from sqlalchemy.dialects.postgresql import INTEGER, TIMESTAMP, VARCHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.config.config import sql_database_setting
@@ -25,7 +25,7 @@ class User(Base):  # type: ignore
     __tablename__ = "users"
 
     id: Mapped[PositiveInt] = mapped_column(
-        Integer,
+        INTEGER,
         nullable=False,
         primary_key=True,
         index=True,

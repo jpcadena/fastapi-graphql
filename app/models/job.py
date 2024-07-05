@@ -5,8 +5,8 @@ A module for job in the app-models package.
 from typing import TYPE_CHECKING
 
 from pydantic import PositiveInt
-from sqlalchemy import CheckConstraint, ForeignKey, Integer
-from sqlalchemy.dialects.postgresql import VARCHAR
+from sqlalchemy import CheckConstraint, ForeignKey
+from sqlalchemy.dialects.postgresql import INTEGER, VARCHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base_class import Base
@@ -24,7 +24,7 @@ class Job(Base):  # type: ignore
     __tablename__ = "job"
 
     id: Mapped[PositiveInt] = mapped_column(
-        Integer,
+        INTEGER,
         nullable=False,
         primary_key=True,
         index=True,
@@ -42,7 +42,7 @@ class Job(Base):  # type: ignore
         comment="Description to identify the job",
     )
     employer_id: Mapped[PositiveInt] = mapped_column(
-        Integer,
+        INTEGER,
         ForeignKey(
             "employer.id",
             name="job_employer_id_fkey",

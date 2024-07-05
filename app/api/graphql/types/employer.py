@@ -28,6 +28,3 @@ class EmployerType(ObjectType):  # type: ignore
         if isinstance(root.jobs, InstrumentedAttribute):
             return root.jobs.all()
         return root.jobs
-
-
-__all__ = ["EmployerType"]

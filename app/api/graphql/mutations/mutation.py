@@ -10,6 +10,7 @@ from app.api.graphql.mutations.employer import (
     UpdateEmployer,
 )
 from app.api.graphql.mutations.job import AddJob, DeleteJob, UpdateJob
+from app.api.graphql.mutations.user import LoginUser
 
 
 class Mutation(ObjectType):  # type: ignore
@@ -20,3 +21,5 @@ class Mutation(ObjectType):  # type: ignore
     add_employer = AddEmployer.Field()
     update_employer = UpdateEmployer.Field()
     delete_employer = DeleteEmployer.Field()
+
+    login_user = LoginUser.Field()

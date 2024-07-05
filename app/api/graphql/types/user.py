@@ -23,6 +23,3 @@ class UserType(ObjectType):  # type: ignore
         root: Optional[User], info: Optional[GraphQLResolveInfo]
     ) -> list[Application] | None:
         return None if root is None else root.applications
-
-
-__all__ = ["UserType"]

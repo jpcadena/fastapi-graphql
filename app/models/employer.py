@@ -5,8 +5,8 @@ A module for employer in the app-models package.
 from typing import TYPE_CHECKING
 
 from pydantic import EmailStr, PositiveInt
-from sqlalchemy import CheckConstraint, Integer
-from sqlalchemy.dialects.postgresql import VARCHAR
+from sqlalchemy import CheckConstraint
+from sqlalchemy.dialects.postgresql import INTEGER, VARCHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.config.config import sql_database_setting
@@ -24,7 +24,7 @@ class Employer(Base):  # type: ignore
     __tablename__ = "employer"
 
     id: Mapped[PositiveInt] = mapped_column(
-        Integer,
+        INTEGER,
         nullable=False,
         primary_key=True,
         index=True,
