@@ -224,13 +224,13 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "certifi"
-version = "2024.6.2"
+version = "2024.7.4"
 description = "Python package for providing Mozilla's CA Bundle."
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "certifi-2024.6.2-py3-none-any.whl", hash = "sha256:ddc6c8ce995e6987e7faf5e3f1b02b302836a0e5d98ece18392cb1a36c72ad56"},
-    {file = "certifi-2024.6.2.tar.gz", hash = "sha256:3cd43f1c6fa7dedc5899d69d3ad0398fd018ad1a17fba83ddaf78aa46c747516"},
+    {file = "certifi-2024.7.4-py3-none-any.whl", hash = "sha256:c198e21b1289c2ab85ee4e67bb4b4ef3ead0892059901a8d5b622f24a1101e90"},
+    {file = "certifi-2024.7.4.tar.gz", hash = "sha256:5a1e7645bc0ec61a09e26c36f6106dd4cf40c6db3a1fb6352b0244e7fb057c7b"},
 ]
 
 [[package]]
@@ -1127,13 +1127,13 @@ files = [
 
 [[package]]
 name = "pydantic"
-version = "2.8.1"
+version = "2.8.2"
 description = "Data validation using Python type hints"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pydantic-2.8.1-py3-none-any.whl", hash = "sha256:a7e968e55cc934de69163cce4e90870326f57575984a698d5a96ad1e97762dbe"},
-    {file = "pydantic-2.8.1.tar.gz", hash = "sha256:5ac6a29cc27108917fb0923c28542471087bf90b2dc2c3a64d779818dffc1f6f"},
+    {file = "pydantic-2.8.2-py3-none-any.whl", hash = "sha256:73ee9fddd406dc318b885c7a2eab8a6472b68b8fb5ba8150949fc3db939f23c8"},
+    {file = "pydantic-2.8.2.tar.gz", hash = "sha256:6f62c13d067b0755ad1c21a34bdd06c0c12625a22b0fc09c6b149816604f7c2a"},
 ]
 
 [package.dependencies]
@@ -1978,4 +1978,4 @@ pgsql = ["asyncpg"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "25d3fbadb37d98f83987f0ca0aadf4c9316f4afe84a34d28ed0b71130081f4a6"
+content-hash = "d62323788e5dfe4a7a076ef6b265d7903b1f7a3daf80a42fd716f31cde0cb3d3"
