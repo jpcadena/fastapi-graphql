@@ -41,13 +41,6 @@ class Settings(BaseSettings):
     MAIL_TIMEOUT: float
     EMAILS_FROM_EMAIL: Optional[EmailStr] = None
     EMAILS_FROM_NAME: Optional[str] = None
-    SUPERUSER_EMAIL: EmailStr
-    SUPERUSER_FIRST_NAME: str
-    SUPERUSER_PASSWORD: str
-    SUPERUSER_LAST_NAME: str
-    SUPERUSER_STREET_ADDRESS: str
-    SUPERUSER_LOCALITY: str
-    SUPERUSER_POSTAL_CODE: str
     BACKEND_CORS_ORIGINS: list[AnyHttpUrl] = []
 
     PUBLIC_KEY_PATH: FilePath

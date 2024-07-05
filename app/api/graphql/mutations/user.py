@@ -2,8 +2,6 @@
 A module for user in the app.api.graphql.mutations package.
 """
 
-from random import choices
-from string import ascii_lowercase
 from typing import Any, Optional
 
 from graphene import Mutation, String
@@ -14,10 +12,14 @@ from sqlalchemy import Select, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.config.config import auth_setting
+from app.core.security.jwt import build_payload, create_access_token
+from app.core.security.password import verify_password
 from app.db.session import get_session
 from app.exceptions.exceptions import NotFoundException
 from app.models.employer import Employer
 from app.models.user import User
+from app.schemas.external.token import TokenPayload
 
 
 class LoginUser(Mutation):  # type: ignore
@@ -38,12 +40,13 @@ class LoginUser(Mutation):  # type: ignore
         async_session: AsyncSession = await get_session()
         stmt = select(User).where(User.email == email)
         try:
-            db_obj: User | None = (await async_session.scalars(stmt)).first()
+            user: User | None = (await async_session.scalars(stmt)).first()
         except SQLAlchemyError as sa_exc:
             raise sa_exc
-        if not db_obj:
+        if not user:
             raise NotFoundException("User could not be found")
-        if db_obj.password != password:
+        if not verify_password(user.hashed_password, password):
             raise GraphQLError("Invalid email or password")
-        token: str = "".join(choices(ascii_lowercase, k=10))
-        return LoginUser(token=token)
+        access_payload: TokenPayload = build_payload(user, auth_setting)
+        access_token: str = create_access_token(access_payload, auth_setting)
+        return LoginUser(token=access_token)

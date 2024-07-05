@@ -81,4 +81,5 @@ if __name__ == "__main__":
         port=setting.SERVER_PORT,
         reload=setting.SERVER_RELOAD,
         log_level=setting.SERVER_LOG_LEVEL,
+        use_colors=True,
     )

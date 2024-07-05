@@ -7,8 +7,8 @@ from typing import Any
 
 from sqlalchemy.exc import (
     CompileError,
-    DataError,
     DatabaseError,
+    DataError,
     DisconnectionError,
     IntegrityError,
     InternalError,
@@ -19,6 +19,7 @@ from sqlalchemy.exc import TimeoutError as SATimeoutError
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncTransaction
 
 from app.core.decorators import benchmark, with_logging
+from app.core.security.password import hash_password
 from app.db.base_class import Base
 from app.db.dummy_data import applications, employers, jobs, users
 from app.db.session import async_engine, get_session
@@ -93,6 +94,8 @@ async def init_db() -> None:
     """
     await create_db_and_tables()
     async_session: AsyncSession = await get_session()
+    for user in users:
+        user["hashed_password"] = hash_password(user.pop("password"))
     await bulk_insert(async_session, Employer, employers)
     await bulk_insert(async_session, Job, jobs)
     await bulk_insert(async_session, User, users)

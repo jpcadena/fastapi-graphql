@@ -46,8 +46,8 @@ class User(Base):  # type: ignore
         nullable=False,
         comment="Preferred e-mail address of the User",
     )
-    password: Mapped[str] = mapped_column(
-        VARCHAR(60), nullable=False, comment="Hashed password of the User"
+    hashed_password: Mapped[str] = mapped_column(
+        VARCHAR(97), nullable=False, comment="Hashed password of the User"
     )
     role: Mapped[str] = mapped_column(
         VARCHAR(50), nullable=False, comment="Role of the User"
@@ -87,8 +87,8 @@ class User(Base):  # type: ignore
             name="users_email_format",
         ),
         CheckConstraint(
-            "LENGTH(password) >= 8",
-            name="users_password_length",
+            "LENGTH(hashed_password) = 97",
+            name="users_hashed_password_length",
         ),
         CheckConstraint(
             "created_at <= CURRENT_TIMESTAMP",
