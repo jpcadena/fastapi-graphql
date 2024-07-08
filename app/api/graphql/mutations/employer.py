@@ -5,14 +5,18 @@ A module for employer in the app.api.graphql.mutations package.
 from typing import Optional
 
 from graphene import Boolean, Field, Int, Mutation, String
+from graphql import GraphQLError
 from graphql.type.definition import GraphQLResolveInfo
 from pydantic import EmailStr, PositiveInt
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.graphql.types.employer import EmployerType
+from app.api.oauth2_validation import authenticate_user
+from app.config.config import auth_setting
 from app.db.session import get_session
-from app.exceptions.exceptions import DatabaseException
+from app.exceptions.exceptions import DatabaseException, ServiceException
 from app.models.employer import Employer
+from app.schemas.external.user import UserAuth
 
 
 class AddEmployer(Mutation):  # type: ignore
@@ -31,13 +35,18 @@ class AddEmployer(Mutation):  # type: ignore
         contact_email: EmailStr,
         industry: str,
     ) -> "AddEmployer":
+        if not info:
+            raise GraphQLError("No information for authentication")
+        user: UserAuth = await authenticate_user(info.context, auth_setting)
+        if not user:
+            raise ServiceException("User not authenticated")
         employer = Employer(
             name=name, contact_email=contact_email, industry=industry
         )
         async_session: AsyncSession = await get_session()
         async_session.add(employer)
         await async_session.commit()
-        return AddEmployer(employer=employer)
+        return AddEmployer(employer=employer, authenticated=user.email)
 
 
 class UpdateEmployer(Mutation):  # type: ignore
@@ -48,6 +57,9 @@ class UpdateEmployer(Mutation):  # type: ignore
         industry = String()
 
     employer = Field(lambda: EmployerType)
+
+    # temporary
+    authenticated = Field(String)
 
     @staticmethod
     async def mutate(

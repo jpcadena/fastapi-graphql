@@ -37,6 +37,13 @@ registered_claims_token_example: JsonDict = {
         "htu": f"{auth_setting.AUDIENCE}",
     }
 }
+user_base_auth_example: JsonDict = {
+    "example": {
+        "id": 1,
+        "username": "username",
+        "email": "example@mail.com",
+    }
+}
 
 
 def merge_examples(*examples: Any) -> JsonDict:

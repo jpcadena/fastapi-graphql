@@ -127,28 +127,3 @@ def create_access_token(
         raise
     logger.info("JWT created with JTI: %s", token_payload.jti)
     return encoded_jwt
-
-
-def create_refresh_token(
-    token_payload: TokenPayload,
-    auth_settings: Annotated[AuthSettings, Depends(get_auth_settings)],
-) -> str:
-    """
-    Create a refresh token for authentication
-    :param token_payload: The data to be used as payload in the token
-    :type token_payload: TokenPayload
-    :param auth_settings: Dependency method for cached setting object
-    :type auth_settings: AuthSettings
-    :return: The access token with refresh expiration time
-    :rtype: str
-    """
-    expires: timedelta = timedelta(
-        minutes=auth_settings.REFRESH_TOKEN_EXPIRE_MINUTES
-    )
-    token: str = create_access_token(
-        token_payload=token_payload,
-        auth_settings=auth_settings,
-        scope=Scope.REFRESH_TOKEN,
-        expires_delta=expires,
-    )
-    return token

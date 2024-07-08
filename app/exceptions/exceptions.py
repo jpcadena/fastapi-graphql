@@ -2,12 +2,13 @@
 This module defines custom exception classes for the Core Security
 """
 
-from typing import Optional
+from typing import Any, Optional
 
+from fastapi import HTTPException, status
 from sqlalchemy.exc import SQLAlchemyError
 
 
-class DatabaseException(SQLAlchemyError):
+class DatabaseException(SQLAlchemyError):  # type: ignore
     """
     Database Exception class
     """
@@ -51,21 +52,25 @@ class SecurityException(Exception):
             self.add_note(note)
 
 
-class GeolocationError(Exception):
-    """Custom exception for Geolocation related errors."""
+class UnauthorizedError(HTTPException):  # type: ignore
+    def __init__(self, detail: str, headers: dict[str, Any]):
+        super().__init__(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=detail,
+            headers=headers,
+        )
 
 
-class QueryLimitExceeded(GeolocationError):
-    """Raised when the query limit for the Maps API is exceeded."""
-
-
-class UnsupportedFileTypeError(Exception):
-    """Raised when the file type is not supported"""
-
-
-class FileSizeExceededError(Exception):
-    """Raised when the file size exceeds the maximum in MB"""
-
-
-class VideoDurationExceededError(Exception):
-    """Raised when the video duration exceeds the maximum in seconds."""
+async def raise_unauthorized_error(
+    detail: str, headers: dict[str, Any]
+) -> None:
+    """
+    Raises an UnauthorizedError exception.
+    :param detail: Detailed message for the unauthorized error.
+    :type detail: str
+    :param headers: Headers to be included in the HTTP response.
+    :type headers: dict[str, Any]
+    :return: None
+    :rtype: NoneType
+    """
+    raise UnauthorizedError(detail, headers)

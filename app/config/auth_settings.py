@@ -36,6 +36,7 @@ class AuthSettings(BaseSettings):
         r"^username:[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-"
         r"[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
     )
+    DETAIL: str = "Could not validate credentials"
     HEADERS: dict[str, str] = {"WWW-Authenticate": "Bearer"}
     SECRET_KEY: str
     SERVER_URL: AnyHttpUrl
