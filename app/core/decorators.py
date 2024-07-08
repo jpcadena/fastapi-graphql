@@ -3,8 +3,8 @@ This module provides decorators designed to provide additional
  functionality to the functions they are used with.
 """
 
-import functools
 import logging
+from functools import wraps
 from time import perf_counter
 from typing import Any, Callable
 
@@ -21,7 +21,7 @@ def with_logging(func: Callable[..., Any]) -> Callable[..., Any]:
     :rtype: Callable
     """
 
-    @functools.wraps(func)
+    @wraps(func)
     async def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
         """
         A wrapper function that adds logging functionality
@@ -52,7 +52,7 @@ def benchmark(func: Callable[..., Any]) -> Callable[..., Any]:
     :rtype: Callable
     """
 
-    @functools.wraps(func)
+    @wraps(func)
     async def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
         """
         A wrapper function that adds benchmarking functionality

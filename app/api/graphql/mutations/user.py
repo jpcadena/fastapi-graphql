@@ -4,7 +4,7 @@ A module for user in the app.api.graphql.mutations package.
 
 from typing import Any, Optional
 
-from graphene import Mutation, String
+from graphene import Field, Mutation, String
 from graphql import GraphQLError
 from graphql.type.definition import GraphQLResolveInfo
 from pydantic import EmailStr
@@ -12,9 +12,11 @@ from sqlalchemy import Select, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.graphql.types.user import UserType
+from app.api.oauth2_validation import admin_user
 from app.config.config import auth_setting
 from app.core.security.jwt import build_payload, create_access_token
-from app.core.security.password import verify_password
+from app.core.security.password import hash_password, verify_password
 from app.db.session import get_session
 from app.exceptions.exceptions import NotFoundException
 from app.models.employer import Employer
@@ -50,3 +52,42 @@ class LoginUser(Mutation):  # type: ignore
         access_payload: TokenPayload = build_payload(user, auth_setting)
         access_token: str = create_access_token(access_payload, auth_setting)
         return LoginUser(token=access_token)
+
+
+class AddUser(Mutation):  # type: ignore
+    class Arguments:
+        username = String(required=True)
+        email = String(required=True)
+        password = String(required=True)
+        role = String(required=True)
+
+    user = Field(lambda: UserType)
+
+    @staticmethod
+    @admin_user
+    async def mutate(
+        root: User | None,
+        info: GraphQLResolveInfo | None,
+        username: str,
+        email: EmailStr,
+        password: str,
+        role: str,
+    ) -> "AddUser":
+        async_session: AsyncSession = await get_session()
+        stmt = select(User).where(User.email == email)
+        try:
+            user_obj: User | None = (await async_session.scalars(stmt)).first()
+        except SQLAlchemyError as sa_exc:
+            raise sa_exc
+        if user_obj:
+            raise NotFoundException("User already exists with that email")
+        hashed_password: str = hash_password(password)
+        user: User = User(
+            username=username,
+            email=email,
+            hashed_password=hashed_password,
+            role=role,
+        )
+        async_session.add(user)
+        await async_session.commit()
+        return AddUser(user=user)

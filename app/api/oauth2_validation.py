@@ -2,13 +2,18 @@
 A module for oauth2 validation in the app.api package.
 """
 
-from typing import Any
+import logging
+from functools import wraps
+from typing import Any, Callable
 
+from graphql import GraphQLError, GraphQLResolveInfo
 from sqlalchemy import Select, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.graphql.resolvers.user import resolver_user
 from app.config.auth_settings import AuthSettings
+from app.config.config import auth_setting
 from app.db.session import get_session
 from app.exceptions.exceptions import (
     DatabaseException,
@@ -18,6 +23,8 @@ from app.exceptions.exceptions import (
 from app.models.user import User
 from app.schemas.external.user import UserAuth
 from app.utils.security.jwt import decode_jwt
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 
 async def get_login_user(username: str) -> User:
@@ -63,3 +70,41 @@ async def authenticate_user(
     user: User = await get_login_user(username)
     user_auth: UserAuth = UserAuth.model_validate(user)
     return user_auth
+
+
+def admin_user(func: Callable[..., Any]) -> Callable[..., Any]:
+    """
+    This decorator validates the role of the user to be admin
+    :param func: The function to be decorated
+    :type func: Callable
+    :return: The decorated function that validates if the user is an admin
+    :rtype: Callable
+    """
+
+    @wraps(func)
+    async def wrapper(*args: tuple[Any, ...], **kwargs: dict[str, Any]) -> Any:
+        """
+        A wrapper function that authenticates the user and authorizes the
+        user if its admin to perform another action
+        :param args: Positional arguments to be passed to the decorated
+         function
+        :type args: tuple[Any, ...]
+        :param kwargs: Keyword arguments to be passed to the decorated
+         function
+        :type kwargs: dict[str, Any]
+        :return: The result of the decorated function's execution
+        :rtype: Any
+        """
+        if len(args) < 2 or not isinstance(args[1], GraphQLResolveInfo):
+            raise GraphQLError("No information available")
+        info: GraphQLResolveInfo = args[1]
+        user_auth: UserAuth = await authenticate_user(
+            info.context, auth_setting
+        )
+        user: User = await resolver_user(user_auth.id)
+        if user.role != "admin":
+            raise GraphQLError("You are not authorized to perform this action")
+        value = await func(*args, **kwargs)
+        return value
+
+    return wrapper

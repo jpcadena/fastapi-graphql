@@ -11,7 +11,7 @@ from pydantic import EmailStr, PositiveInt
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.graphql.types.employer import EmployerType
-from app.api.oauth2_validation import authenticate_user
+from app.api.oauth2_validation import admin_user, authenticate_user
 from app.config.config import auth_setting
 from app.db.session import get_session
 from app.exceptions.exceptions import DatabaseException, ServiceException
@@ -28,6 +28,7 @@ class AddEmployer(Mutation):  # type: ignore
     employer = Field(lambda: EmployerType)
 
     @staticmethod
+    @admin_user
     async def mutate(
         root: Optional[Employer],
         info: Optional[GraphQLResolveInfo],
@@ -62,6 +63,7 @@ class UpdateEmployer(Mutation):  # type: ignore
     authenticated = Field(String)
 
     @staticmethod
+    @admin_user
     async def mutate(
         root: Optional[Employer],
         info: Optional[GraphQLResolveInfo],
@@ -91,6 +93,7 @@ class DeleteEmployer(Mutation):  # type: ignore
     success = Boolean()
 
     @staticmethod
+    @admin_user
     async def mutate(
         root: Optional[Employer],
         info: Optional[GraphQLResolveInfo],
