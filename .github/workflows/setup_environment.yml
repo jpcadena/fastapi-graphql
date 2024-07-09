@@ -1,0 +1,46 @@
+# This is the name of the workflow, it appears in the GitHub Actions tab
+name: Setup Python Environment
+
+# The name for workflow runs generated from this workflow
+run-name: Setup Python Environment Run on ${{ github.ref }} by @${{ github.actor }}
+
+# This specifies the events that will trigger the workflow to run
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        required: true
+        type: string
+
+# Jobs define the actual tasks that the workflow will execute
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      python-version: ${{ steps.setup-python.outputs.python-version }}
+
+    steps:
+      # Checkout the repository content to the runner
+    - uses: actions/checkout@v4
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+
+      # Setup Python environment
+    - name: Setup Python
+      id: setup-python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: 'poetry'
+
+    - name: Generate requirements.txt from Poetry
+      run: |
+        poetry export -f requirements.txt --output requirements.txt --without-hashes
+
+    # Install Python dependencies
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
