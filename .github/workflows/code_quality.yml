@@ -37,6 +37,8 @@ jobs:
     # Check code formatting using isort
     - name: Run isort
       uses: isort/isort-action@v1
+      with:
+        args: .
 
     - name: Auto-format Python code with Black
       run: |
