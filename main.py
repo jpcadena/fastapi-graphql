@@ -51,12 +51,7 @@ app.mount(
     StaticFiles(directory=init_setting.IMAGES_DIRECTORY),
     name=init_setting.IMAGES_APP,
 )
-app.mount(
-    "/graphql", GraphQLApp(schema, on_get=make_graphiql_handler()), "graphql"
-)
-
-
-# make_playground_handler()
+app.mount("/", GraphQLApp(schema, on_get=make_graphiql_handler()), "graphql")
 
 
 @app.get(
