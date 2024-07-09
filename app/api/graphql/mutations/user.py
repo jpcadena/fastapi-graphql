@@ -4,22 +4,25 @@ A module for user in the app.api.graphql.mutations package.
 
 from typing import Any, Optional
 
-from graphene import Field, Mutation, String
+from graphene import Field, Int, Mutation, String
 from graphql import GraphQLError
 from graphql.type.definition import GraphQLResolveInfo
-from pydantic import EmailStr
+from pydantic import EmailStr, PositiveInt
 from sqlalchemy import Select, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.api.graphql.types.application import ApplicationType
 from app.api.graphql.types.user import UserType
-from app.api.oauth2_validation import admin_user
+from app.api.oauth2_validation import admin_user, auth_same_user
 from app.config.config import auth_setting
 from app.core.security.jwt import build_payload, create_access_token
 from app.core.security.password import hash_password, verify_password
 from app.db.session import get_session
 from app.exceptions.exceptions import NotFoundException
+from app.models.application import Application
 from app.models.employer import Employer
+from app.models.job import Job
 from app.models.user import User
 from app.schemas.external.token import TokenPayload
 
@@ -91,3 +94,33 @@ class AddUser(Mutation):  # type: ignore
         async_session.add(user)
         await async_session.commit()
         return AddUser(user=user)
+
+
+class ApplyToJob(Mutation):  # type: ignore
+    class Arguments:
+        user_id = Int(required=True)
+        job_id = Int(required=True)
+
+    application = Field(lambda: ApplicationType)
+
+    @staticmethod
+    @auth_same_user
+    async def mutate(
+        root: Job | None,
+        info: GraphQLResolveInfo | None,
+        user_id: PositiveInt,
+        job_id: PositiveInt,
+    ) -> "ApplyToJob":
+        async_session: AsyncSession = await get_session()
+        stmt = select(Application).where(
+            Application.user_id == user_id and Application.job_id == job_id
+        )
+        try:
+            application: Application | None = (
+                await async_session.scalars(stmt)
+            ).first()
+        except SQLAlchemyError as sa_exc:
+            raise sa_exc
+        async_session.add(application)
+        await async_session.commit()
+        return ApplyToJob(application=application)
