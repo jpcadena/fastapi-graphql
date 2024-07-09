@@ -1,0 +1,50 @@
+# This is the name of the workflow, it appears in the GitHub Actions tab
+name: Security Check
+
+# The name for workflow runs generated from this workflow
+run-name: Security Check on ${{ github.ref }} by @${{ github.actor }}
+
+# This specifies the events that will trigger the workflow to run
+on: [push, pull_request]
+
+jobs:
+  setup:
+    uses: ./.github/workflows/setup_environment.yml
+    with:
+      python-version: '3.11'
+
+  # This job runs Bandit for security checks
+  bandit:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Bandit
+      run: pip install bandit
+
+    - name: Run Bandit
+      run: bandit -c pyproject.toml -r .
+
+  # This job runs Safety for security checks
+  safety:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+
+    - name: Generate requirements.txt from Poetry
+      run: |
+        poetry export -f requirements.txt --output requirements.txt --without-hashes
+
+    - name: Install Safety
+      run: pip install safety
+
+    - name: Run Safety
+      run: safety check -r requirements.txt
