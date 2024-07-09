@@ -34,13 +34,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Diagnose isort Configuration
-      run: |
-        isort . --verbose
-        isort --show-config
-        isort app/crud/specification.py --diff
-        isort --version
-
     # Check code formatting using isort
     - name: Run isort
       uses: isort/isort-action@v1
