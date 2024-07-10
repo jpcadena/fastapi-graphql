@@ -1,0 +1,73 @@
+{
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.rulers": [
+      80,
+      100
+    ],
+    "editor.snippetSuggestions": "top",
+    "editor.tabSize": 4
+  },
+  "black-formatter.args": [
+    "--config",
+    "pyproject.toml"
+  ],
+  "black-formatter.interpreter": [
+    "${workspaceFolder}/.venv/Scripts/python.exe"
+  ],
+  "black-formatter.path": [
+    "${workspaceFolder}/.venv/Scripts/black.exe"
+  ],
+  "cSpell.words": [
+    "sqlalchemy"
+  ],
+  "files.autoSave": "onFocusChange",
+  "isort.args": [
+    "--profile",
+    "black",
+    "--settings-file",
+    "pyproject.toml"
+  ],
+  "isort.check": true,
+  "isort.interpreter": [
+    "${workspaceFolder}/.venv/Scripts/python.exe"
+  ],
+  "isort.path": [
+    "${workspaceFolder}/.venv/Scripts/isort.exe"
+  ],
+  "mypy-type-checker.args": [
+    "--config-file=pyproject.toml"
+  ],
+  "mypy-type-checker.interpreter": [
+    "${workspaceFolder}/.venv/Scripts/python.exe"
+  ],
+  "mypy-type-checker.path": [
+    "${workspaceFolder}/.venv/Scripts/mypy.exe"
+  ],
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.typeCheckingMode": "strict",
+  "python.envFile": "${workspaceFolder}/.env",
+  "python.languageServer": "Pylance",
+  "python.terminal.activateEnvironment": true,
+  "python.testing.pytestArgs": [
+    "."
+  ],
+  "python.testing.pytestEnabled": true,
+  "ruff.interpreter": [
+    "${workspaceFolder}/.venv/Scripts/python.exe"
+  ],
+  "ruff.lint.args": [
+    "--config=pyproject.toml"
+  ],
+  "ruff.path": [
+    "${workspaceFolder}/.venv/Scripts/ruff.exe"
+  ],
+  "terminal.integrated.env.windows": {
+    "PYTHONUNBUFFERED": "1"
+  }
+}
