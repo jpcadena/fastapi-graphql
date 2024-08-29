@@ -73,29 +73,29 @@ packages = [{ include = "fastapi_graphql" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-fastapi = { extras = ["all"], version = "^0.111.0" }
-uvicorn = { extras = ["standard"], version = "^0.30.1" }
-starlette = "0.37.2"
+fastapi = { extras = ["all"], version = "^0.112.2" }
+uvicorn = { extras = ["standard"], version = "^0.30.6" }
+starlette = "0.38.2"
 graphene = "^3.3"
 starlette-graphene3 = "^0.6.0"
 graphql-core = "^3.2.3"
 pydantic = "^2.8.2"
-pydantic-settings = "^2.3.4"
+pydantic-settings = "^2.4.0"
 pydantic-extra-types = "^2.9.0"
 email-validator = "^2.2.0"
 python-dotenv = "^1.0.1"
 aiofiles = "^24.1.0"
 types-aiofiles = "^24.1.0.20240626"
-authlib = "^1.3.1"
+authlib = "^1.3.2"
 passlib = { extras = ["bcrypt"], version = "^1.7.4" }
-types-passlib = "^1.7.7.20240327"
-sqlalchemy = { extras = ["asyncio"], version = "^2.0.31" }
+types-passlib = "^1.7.7.20240819"
+sqlalchemy = { extras = ["asyncio"], version = "^2.0.32" }
 asyncpg = "^0.29.0"
-ruff = "^0.5.1"
-isort = {extras = ["colors"], version = "^5.13.2"}
-mypy = "^1.10.1"
-black = "^24.4.2"
-pre-commit = "^3.7.1"
+ruff = "^0.6.2"
+isort = { extras = ["colors"], version = "^5.13.2" }
+mypy = "^1.11.2"
+black = "^24.8.0"
+pre-commit = "^3.8.0"
 argon2-cffi = "^23.1.0"
 
 [build-system]
