@@ -75,7 +75,7 @@ packages = [{ include = "fastapi_graphql" }]
 python = "^3.11"
 fastapi = { extras = ["all"], version = "^0.112.2" }
 uvicorn = { extras = ["standard"], version = "^0.30.6" }
-starlette = "0.38.4"
+starlette = "0.38.5"
 graphene = "^3.3"
 starlette-graphene3 = "^0.6.0"
 graphql-core = "^3.2.3"
