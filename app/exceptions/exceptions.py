@@ -8,7 +8,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.exc import SQLAlchemyError
 
 
-class DatabaseException(SQLAlchemyError):  # type: ignore
+class DatabaseException(SQLAlchemyError):
     """
     Database Exception class
     """
@@ -52,7 +52,7 @@ class SecurityException(Exception):
             self.add_note(note)
 
 
-class UnauthorizedError(HTTPException):  # type: ignore
+class UnauthorizedError(HTTPException):
     def __init__(self, detail: str, headers: dict[str, Any]):
         super().__init__(
             status_code=status.HTTP_401_UNAUTHORIZED,
