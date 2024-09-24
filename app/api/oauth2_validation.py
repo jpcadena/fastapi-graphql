@@ -173,7 +173,7 @@ def auth_same_user(func: Callable[..., Any]) -> Callable[..., Any]:
         user_auth: UserAuth = await authenticate_user(
             info.context, auth_setting
         )
-        user_id: PositiveInt | None = kwargs.get("user_id")
+        user_id: PositiveInt | None = kwargs.get("user_id")  # type: ignore
         if user_id is None:
             raise GraphQLError("No user ID provided")
         if user_auth.id != user_id:

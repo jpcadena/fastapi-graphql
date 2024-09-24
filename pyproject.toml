@@ -75,7 +75,7 @@ packages = [{ include = "fastapi_graphql" }]
 python = "^3.11"
 fastapi = { extras = ["all"], version = "^0.115.0" }
 uvicorn = { extras = ["standard"], version = "^0.30.6" }
-starlette = "0.38.5"
+starlette = "0.38.6"
 graphene = "^3.3"
 starlette-graphene3 = "^0.6.0"
 graphql-core = "^3.2.4"
@@ -91,7 +91,7 @@ passlib = { extras = ["bcrypt"], version = "^1.7.4" }
 types-passlib = "^1.7.7.20240819"
 sqlalchemy = { extras = ["asyncio"], version = "^2.0.35" }
 asyncpg = "^0.29.0"
-ruff = "^0.6.5"
+ruff = "^0.6.7"
 isort = { extras = ["colors"], version = "^5.13.2" }
 mypy = "^1.11.2"
 black = "^24.8.0"
