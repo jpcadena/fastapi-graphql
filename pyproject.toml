@@ -94,7 +94,7 @@ asyncpg = "^0.29.0"
 ruff = "^0.6.7"
 isort = { extras = ["colors"], version = "^5.13.2" }
 mypy = "^1.11.2"
-black = "^24.8.0"
+black = "^24.10.0"
 pre-commit = "^3.8.0"
 argon2-cffi = "^23.1.0"
 
