@@ -78,7 +78,7 @@ uvicorn = { extras = ["standard"], version = "^0.30.6" }
 starlette = "0.38.6"
 graphene = "^3.3"
 starlette-graphene3 = "^0.6.0"
-graphql-core = "^3.2.4"
+graphql-core = "^3.2.5"
 pydantic = "^2.9.2"
 pydantic-settings = "^2.5.2"
 pydantic-extra-types = "^2.9.0"
