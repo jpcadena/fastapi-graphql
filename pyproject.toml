@@ -74,7 +74,7 @@ packages = [{ include = "fastapi_graphql" }]
 [tool.poetry.dependencies]
 python = "^3.11"
 fastapi = { extras = ["all"], version = "^0.115.0" }
-uvicorn = { extras = ["standard"], version = "^0.30.6" }
+uvicorn = { extras = ["standard"], version = "^0.31.1" }
 starlette = "0.38.6"
 graphene = "^3.3"
 starlette-graphene3 = "^0.6.0"
