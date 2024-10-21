@@ -76,7 +76,7 @@ python = "^3.11"
 fastapi = { extras = ["all"], version = "^0.115.2" }
 uvicorn = { extras = ["standard"], version = "^0.32.0" }
 starlette = "0.40.0"
-graphene = "^3.3"
+graphene = "^3.4"
 starlette-graphene3 = "^0.6.0"
 graphql-core = "^3.2.5"
 pydantic = "^2.9.2"
