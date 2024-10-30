@@ -73,14 +73,14 @@ packages = [{ include = "fastapi_graphql" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-fastapi = { extras = ["all"], version = "^0.115.2" }
+fastapi = { extras = ["all"], version = "^0.115.4" }
 uvicorn = { extras = ["standard"], version = "^0.32.0" }
-starlette = "0.40.0"
-graphene = "^3.3"
+starlette = "0.41.2"
+graphene = "^3.4.1"
 starlette-graphene3 = "^0.6.0"
 graphql-core = "^3.2.5"
 pydantic = "^2.9.2"
-pydantic-settings = "^2.5.2"
+pydantic-settings = "^2.6.0"
 pydantic-extra-types = "^2.9.0"
 email-validator = "^2.2.0"
 python-dotenv = "^1.0.1"
@@ -90,10 +90,10 @@ authlib = "^1.3.2"
 passlib = { extras = ["bcrypt"], version = "^1.7.4" }
 types-passlib = "^1.7.7.20240819"
 sqlalchemy = { extras = ["asyncio"], version = "^2.0.36" }
-asyncpg = "^0.29.0"
-ruff = "^0.6.9"
+asyncpg = "^0.30.0"
+ruff = "^0.7.1"
 isort = { extras = ["colors"], version = "^5.13.2" }
-mypy = "^1.12.0"
+mypy = "^1.13.0"
 black = "^24.10.0"
 pre-commit = "^4.0.1"
 argon2-cffi = "^23.1.0"
