@@ -22,7 +22,7 @@ repos:
         args: [ --markdown-linebreak-ext=md ]
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.19.0
+    rev: v3.19.1
     hooks:
       - id: pyupgrade
         args:
@@ -30,7 +30,7 @@ repos:
           - --keep-runtime-typing
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.1
+    rev: v0.8.3
     hooks:
       # Run the linter.
       - id: ruff
@@ -52,7 +52,7 @@ repos:
         args: [ "--config", "pyproject.toml" ]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.1
+    rev: v0.8.3
     hooks:
       # Run the formatter.
       - id: ruff-format
