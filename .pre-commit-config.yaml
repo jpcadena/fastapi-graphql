@@ -30,7 +30,7 @@ repos:
           - --keep-runtime-typing
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.4
+    rev: v0.9.4
     hooks:
       # Run the linter.
       - id: ruff
@@ -38,7 +38,7 @@ repos:
                 "pyproject.toml" ]
 
   - repo: https://github.com/pycqa/isort
-    rev: 5.13.2
+    rev: 6.0.0
     hooks:
       - id: isort
         name: isort (python)
@@ -46,20 +46,20 @@ repos:
 
   # Using this mirror lets us use mypyc-compiled black, which is about 2x faster
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 24.10.0
+    rev: 25.1.0
     hooks:
       - id: black
         args: [ "--config", "pyproject.toml" ]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.4
+    rev: v0.9.4
     hooks:
       # Run the formatter.
       - id: ruff-format
         args: [ "--config", "pyproject.toml" ]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.14.0
+    rev: v1.14.1
     hooks:
       - id: mypy
         args: [ --config-file=./pyproject.toml ]
@@ -81,7 +81,7 @@ repos:
           ]
 
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.8.0
+    rev: 1.8.2
     hooks:
       - id: bandit
         args: [ "-c", "pyproject.toml" ]
