@@ -93,7 +93,7 @@ sqlalchemy = { extras = ["asyncio"], version = "^2.0.37" }
 asyncpg = "^0.30.0"
 ruff = "^0.9.4"
 isort = { extras = ["colors"], version = "^6.0.0" }
-mypy = "^1.14.1"
+mypy = "^1.15.0"
 black = "^25.1.0"
 pre-commit = "^4.1.0"
 argon2-cffi = "^23.1.0"
