@@ -89,7 +89,7 @@ types-aiofiles = "^24.1.0.20241221"
 authlib = "^1.4.1"
 passlib = { extras = ["bcrypt"], version = "^1.7.4" }
 types-passlib = "^1.7.7.20241221"
-sqlalchemy = { extras = ["asyncio"], version = "^2.0.37" }
+sqlalchemy = { extras = ["asyncio"], version = "^2.0.40" }
 asyncpg = "^0.30.0"
 ruff = "^0.9.4"
 isort = { extras = ["colors"], version = "^6.0.0" }
